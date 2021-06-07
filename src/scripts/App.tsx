@@ -1,26 +1,34 @@
 import './App.css';
 import React, { Component } from 'react';
 
-class Item extends React.Component {
-  constructor(props: string) {
+interface MyProps {
+  todos: string[];
+  checkedTodos: string[];
+  completedBtn: string;
+  checked: boolean;
+}
+
+class Item extends Component <any,MyProps> {
+  constructor(props: any) {
     super(props);
     this.state = {
       todos: ['Implement the addTodo method', 'Implement the removeTodo method', 'Implement the clearCompletedTodos method', 
     'Implement the removeAllTodos method', 'Implement the showHideCompletedTodso method', 'Implement the toggleTodoCompleteStatus method'], 
       checkedTodos: [], 
-      completedBtn: 'Hide Completed'
+      completedBtn: 'Hide Completed', 
+      checked: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleHide = this.handleHide.bind(this);
   }
   // allows change of state in text box 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleChange(event: any) {
+    this.setState({event.target.value});
   }
 
   // handles the form submission and adds a todo to the task list
-  handleSubmit(event) {
+  handleSubmit(event: any) {
     event.preventDefault();
     const form = event.currentTarget;
     const inputValue = form.elements["newTodo"].value;
@@ -39,6 +47,7 @@ class Item extends React.Component {
       checked: true
     });
   }
+
   hideComplete() {
     this.clearCompleted(false);
     const { checkedTodos } = this.state;
@@ -66,10 +75,8 @@ class Item extends React.Component {
   }
 
   removeAll(name: number, el: string) {
-    const todos = this.state.todos.filter((name: string, el: string) => {
-      return false
-    })
-    const completed = this.state.checkedTodos.filter((name: string, el: string) => {
+    const todos = this.state.todos.filter((name: string, el) => false);
+    const completed = this.state.checkedTodos.filter((name: string, el) => {
       return false;
     })
     this.setState({ todos });
@@ -97,7 +104,7 @@ class Item extends React.Component {
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo))
 
     if (remove === true) {
-      const completed = this.state.checkedTodos.filter((name: string, el: string) => {
+      const completed = this.state.checkedTodos.filter((name: string, el) => {
         return false;
       })
       this.setState({ checkedTodos: completed });
@@ -136,7 +143,7 @@ class Item extends React.Component {
           <h2 id="list-heading"> Tasks </h2>
 
           <ul className="todo-list stack-large stack-exception" aria-labelledby="list-heading">
-            {this.state.todos.map(todo => (
+            {this.state.todos.map((todo: {} | null | undefined) => (
               <li className="todo stack-small" key={this.state.todos.indexOf(todo)}>
                 <div className="c-cb">
                   <input id={this.state.todos.indexOf(todo)} type="checkbox" onChange={this.handleHide}/>
