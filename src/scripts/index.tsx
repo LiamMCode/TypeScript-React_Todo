@@ -3,12 +3,12 @@ import * as ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, Router, Route} from 'react-router-dom';
 
-  ReactDOM.render(
+ReactDOM.render(
   <BrowserRouter>
     <React.Fragment>
-      <Route> React exact path = '/' component={App} </Route>
+      <Route path='/' exact component={App}></Route>
     </React.Fragment>
     </BrowserRouter>, document.getElementById('root')
   );

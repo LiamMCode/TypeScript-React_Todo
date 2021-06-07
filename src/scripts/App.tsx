@@ -1,5 +1,5 @@
 import './App.css';
-import React, { Component } from 'react';
+import * as React from 'react';
 
 interface MyProps {
   todos: string[];
@@ -9,7 +9,7 @@ interface MyProps {
   value: any;
 }
 
-class Item extends Component <any,MyProps> {
+class Item extends React.Component <any,MyProps> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -85,7 +85,6 @@ class Item extends Component <any,MyProps> {
     this.setState({checkedTodos : completed});
   }
 
-
   clearCompleted(remove: boolean) {
     const { checkedTodos } = this.state;
     const { todos } = this.state;
@@ -93,14 +92,14 @@ class Item extends Component <any,MyProps> {
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) =>  {
       let toHide = el.parentElement?.parentElement;
       let labelParent = toHide?.children[0];
-      let labelValue = labelParent?.children[1];
+      let labelValue = labelParent?.children[1].innerHTML;
 
-      if (el.checked === true) {
-        labelValue = document.getElementsByClassName(labelValue.className)[i].innerHTML;
+      if (this.state.checked === true) {
+        labelValue = document.getElementsByClassName(labelValue!)[i].innerHTML;
         labelValue = labelValue.substring(1); // theres a weird whitespace at the start of labelValue this is to remove it
         checkedTodos.push(labelValue);
       }
-      el.checked = false;
+      this.setState({checked: false});
     });
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo))
 
@@ -111,6 +110,11 @@ class Item extends Component <any,MyProps> {
       this.setState({ checkedTodos: completed });
     }
     this.setState({ todos: newTodos });
+  }
+
+  getState(todo: string) {
+    let currentState: string = String(this.state.todos.indexOf(todo));
+    return currentState;
   }
 
   render() {
@@ -147,8 +151,8 @@ class Item extends Component <any,MyProps> {
             {this.state.todos.map(todo => (
               <li className="todo stack-small" key={this.state.todos.indexOf(todo)}>
                 <div className="c-cb">
-                  <input id={this.state.todos.indexOf(todo)} type="checkbox" onChange={this.handleHide}/>
-                  <label className="todo-label" htmlFor={this.state.todos.indexOf(todo)}> {todo}</label>
+                  <input id={this.getState(todo)} type="checkbox" onChange={this.handleHide}/>
+                  <label className="todo-label" htmlFor={this.getState(todo)}> {todo}</label>
                 </div>
 
                 <div className="btn-group">

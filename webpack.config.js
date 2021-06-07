@@ -1,12 +1,12 @@
 module.exports = {
     devtool: 'inline-source-map',
-    entry: './src/index.tsx',
+    entry: './src/scripts/App.tsx',
     output: {
       path: __dirname + '/public',
-      filename: 'build/app.js'
+      filename: './src/scripts/app.js'
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js']
+      extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     module: {
       rules: [
