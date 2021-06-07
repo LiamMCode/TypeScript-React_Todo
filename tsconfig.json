@@ -6,7 +6,7 @@
     "checkJs": false,
     "jsx": "react",
     "outDir": "./build",
-    "rootDir": "./src",
+    "rootDir": "public",
     "removeComments": true,
     "noEmit": true,
     "pretty": true,
@@ -17,7 +17,7 @@
     "esModuleInterop": true
 },
 "include": [
-    "./src/**/*"
+    "public/**/*"
 ],
 "exclude": [
     "node_modules"
