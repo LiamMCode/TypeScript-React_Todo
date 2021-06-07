@@ -116,12 +116,11 @@ class Item extends React.Component <any,MyProps> {
     let currentState: string = String(this.state.todos.indexOf(todo));
     return currentState;
   }
-
   render() {
     return (
       <React.Fragment>
         <div className="todoapp stack-large">
-          <h1>Todo App</h1>
+          <h1>Todo App with TypeScript and React</h1>
           <form onSubmit={this.handleSubmit}>
             <input type="text" id="newTodo" className="input input__lg" name="newTodo" autoComplete="off" value={this.state.value} onChange={this.handleChange}/>
             <button type="submit" className="btn btn__primary btn__lg"> Add </button>

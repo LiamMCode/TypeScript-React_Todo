@@ -1,5 +1,5 @@
 {
-  "name": "TypeScript-React_Todo",
+  "name": "typescript-react_todo",
   "version": "1.0.0",
   "description": "An updated version of https://github.com/LiamMCode/React_TODO which uses TypeScript rather than JavaScript",
   "main": "index.js",
