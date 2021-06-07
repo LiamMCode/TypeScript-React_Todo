@@ -6,6 +6,7 @@ interface MyProps {
   checkedTodos: string[];
   completedBtn: string;
   checked: boolean;
+  value: any;
 }
 
 class Item extends Component <any,MyProps> {
@@ -16,7 +17,8 @@ class Item extends Component <any,MyProps> {
     'Implement the removeAllTodos method', 'Implement the showHideCompletedTodso method', 'Implement the toggleTodoCompleteStatus method'], 
       checkedTodos: [], 
       completedBtn: 'Hide Completed', 
-      checked: false
+      checked: false, 
+      value: undefined
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,7 +26,7 @@ class Item extends Component <any,MyProps> {
   }
   // allows change of state in text box 
   handleChange(event: any) {
-    this.setState({event.target.value});
+    this.setState(event.target.value);
   }
 
   // handles the form submission and adds a todo to the task list
@@ -74,7 +76,7 @@ class Item extends Component <any,MyProps> {
     this.setState({ todos })
   }
 
-  removeAll(name: number, el: string) {
+  removeAll() {
     const todos = this.state.todos.filter((name: string, el) => false);
     const completed = this.state.checkedTodos.filter((name: string, el) => {
       return false;
@@ -89,11 +91,10 @@ class Item extends Component <any,MyProps> {
     const { todos } = this.state;
 
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) =>  {
-      let toHide = el.parentElement.parentElement;
-      let labelParent = toHide.children[0];
-      let labelValue = labelParent.children[1];
+      let toHide = el.parentElement?.parentElement;
+      let labelParent = toHide?.children[0];
+      let labelValue = labelParent?.children[1];
 
-    
       if (el.checked === true) {
         labelValue = document.getElementsByClassName(labelValue.className)[i].innerHTML;
         labelValue = labelValue.substring(1); // theres a weird whitespace at the start of labelValue this is to remove it
@@ -128,7 +129,7 @@ class Item extends Component <any,MyProps> {
               <span className="visually-hidden"> tasks</span>
             </button>
             
-            <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => {this.removeAll(1, this.state.todos.indexOf(1))}}>
+            <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => {this.removeAll()}}>
               <span className="visually-hidden">Show </span>
               <span>Remove All</span>
               <span className="visually-hidden"> tasks</span>
@@ -143,7 +144,7 @@ class Item extends Component <any,MyProps> {
           <h2 id="list-heading"> Tasks </h2>
 
           <ul className="todo-list stack-large stack-exception" aria-labelledby="list-heading">
-            {this.state.todos.map((todo: {} | null | undefined) => (
+            {this.state.todos.map(todo => (
               <li className="todo stack-small" key={this.state.todos.indexOf(todo)}>
                 <div className="c-cb">
                   <input id={this.state.todos.indexOf(todo)} type="checkbox" onChange={this.handleHide}/>
