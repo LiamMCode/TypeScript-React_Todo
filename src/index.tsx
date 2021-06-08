@@ -1,15 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
+// import './css/index.css';
 import App from './App';
 import {BrowserRouter, Route} from 'react-router-dom';
 
 ReactDOM.render(
-  <BrowserRouter>
     <React.Fragment>
+    <BrowserRouter>
       <Route path='/' exact component={App}></Route>
-    </React.Fragment>
-    </BrowserRouter>, document.getElementById('root')
+    </BrowserRouter>
+    </React.Fragment>, document.getElementById('root')
   );
-reportWebVitals();
+
+// ReactDOM.render(<h1>HELO</h1>, document.getElementById('root'));

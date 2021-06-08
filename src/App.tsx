@@ -1,4 +1,4 @@
-import './App.css';
+import './css/App.css';
 import * as React from 'react';
 
 interface MyProps {
@@ -9,7 +9,7 @@ interface MyProps {
   value: any;
 }
 
-class Item extends React.Component <any,MyProps> {
+class Item extends React.Component <any, MyProps> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -118,7 +118,7 @@ class Item extends React.Component <any,MyProps> {
   }
   render() {
     return (
-      <React.Fragment>
+      <>
         <div className="todoapp stack-large">
           <h1>Todo App with TypeScript and React</h1>
           <form onSubmit={this.handleSubmit}>
@@ -163,7 +163,7 @@ class Item extends React.Component <any,MyProps> {
             ))}
           </ul>
         </div>
-      </React.Fragment>
+      </>
     )
   }
 }

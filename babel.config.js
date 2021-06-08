@@ -1,31 +1,34 @@
 module.exports = {
-    presets: [
+  presets: [
       [
-        "@babel/preset-env",
-        {
-          modules: false
-        }
+          "@babel/preset-env",
+          {
+              modules: false
+          }
       ],
-      "@babel/preset-react"
-    ],
-    plugins: [
+      "@babel/preset-react",
+      "@babel/preset-typescript"
+  ],
+  plugins: [
       "@babel/plugin-transform-runtime",
       "@babel/plugin-syntax-dynamic-import",
       "@babel/plugin-proposal-class-properties"
-    ],
-    env: {
+  ],
+  env: {
       production: {
-        only: ["src"],
-        plugins: [
-          [
-            "transform-react-remove-prop-types",
-            {
-              removeImport: true
-            }
+          only: [
+              "src"
           ],
-          "@babel/plugin-transform-react-inline-elements",
-          "@babel/plugin-transform-react-constant-elements"
-        ]
+          plugins: [
+              [
+                  "transform-react-remove-prop-types",
+                  {
+                      removeImport: true
+                  }
+              ],
+              "@babel/plugin-transform-react-inline-elements",
+              "@babel/plugin-transform-react-constant-elements"
+          ]
       }
-    }
-  };
+  }
+};

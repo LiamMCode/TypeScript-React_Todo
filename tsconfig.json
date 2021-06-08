@@ -1,17 +1,17 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist",
-    "target": "es5",
-    "module": "es6",
-    "jsx": "react",
-    "noImplicitAny": true,
-    "allowSyntheticDefaultImports": true
-},
-"include": [
-    "public/**/*.tsx"
-],
-"exclude": [
-    "node_modules"
-],
-"compileOnSave": false
+    "compilerOptions": {
+        //where your webpack is pointing to output to  
+        "outDir": "./dist/",
+        //Enables errors for any types
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es5",
+        "jsx": "react",
+        "allowJs": true,
+        "moduleResolution": "node",
+        //Allows for imports "import x from 'y'" and not just wildcard
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+    }
 }
