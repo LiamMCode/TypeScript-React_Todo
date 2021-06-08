@@ -114,6 +114,7 @@ class Item extends React.Component <any, MyProps> {
         checkedTodos.push(labelValue);
         checkedTodos.push(checked[i]);
       }
+      (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
     });
     const checks = true;
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
