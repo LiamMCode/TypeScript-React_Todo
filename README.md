@@ -1,6 +1,5 @@
 # TypeScript-React_Todo
- An updated version of https://github.com/LiamMCode/React_TODO which uses TypeScript rather than JavaScript
-    - Implements webpack, Typescript and React
+ An updated version of https://github.com/LiamMCode/React_TODO which uses TypeScript rather than JavaScript and has been improved to include webpack
 
 # Installations
 - `webpack`
