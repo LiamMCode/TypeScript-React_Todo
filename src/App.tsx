@@ -3,9 +3,9 @@ import * as React from 'react';
 
 interface MyProps {
   todos: string[];
-  checkedTodos: string[];
+  checkedTodos: any[];
   completedBtn: string;
-  checked: boolean;
+  checked: boolean[];
   value: any;
 }
 
@@ -17,7 +17,7 @@ class Item extends React.Component <any, MyProps> {
     'Implement the removeAllTodos method', 'Implement the showHideCompletedTodso method', 'Implement the toggleTodoCompleteStatus method'], 
       checkedTodos: [], 
       completedBtn: 'Hide Completed', 
-      checked: false, 
+      checked: [false, false, false, false, false, false], 
       value: undefined
     }
     this.handleChange = this.handleChange.bind(this);
@@ -39,15 +39,28 @@ class Item extends React.Component <any, MyProps> {
     }
     else {
       this.setState({
-        todos: this.state.todos.concat(inputValue)
+        todos: this.state.todos.concat(inputValue), 
+        checked: this.state.checked.concat(false),
       })
+      console.log(this.state.todos, this.state.checked);
     }
   }
 
-  handleHide() {
-    this.setState({
-      checked: true
-    });
+  handleHide(todoToHide: string) {
+    const { checked } = this.state;
+    const { todos } = this.state;
+
+    const indexOfTodo = todos.indexOf(todoToHide);
+
+    let newChecked: boolean[] = checked;
+    if (newChecked[indexOfTodo] === true) {
+      newChecked[indexOfTodo] = false;
+    }
+    else {
+      newChecked[indexOfTodo] = true
+    }
+    this.setState({checked : newChecked});
+    console.log(checked);
   }
 
   hideComplete() {
@@ -81,25 +94,30 @@ class Item extends React.Component <any, MyProps> {
       return false;
     })
     this.setState({ todos });
-    this.setState({checkedTodos : completed});
+    this.setState({ checkedTodos : completed});
   }
-
+  // would have to also remove the bool after the todo which is checked 
   clearCompleted(remove: boolean) {
     const { checkedTodos } = this.state;
     const { todos } = this.state;
+    const { checked } = this.state;
+
     console.log(checkedTodos, todos);
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) =>  {
       let toHide = el.parentElement.parentElement;
       let labelParent = toHide.children[0];
-      console.log(this.state.checked);
-      if (this.state.checked === true) {
+
+      if (checked[i] === true) { // this line changes 
         let labelValue = labelParent.children[1].innerHTML;
+        console.log(labelValue);
         labelValue = labelValue.substring(1); // theres a weird whitespace at the start of labelValue this is to remove it
         checkedTodos.push(labelValue);
+        checkedTodos.push(checked[i]);
       }
-      this.setState({checked: false});
     });
-    const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo))
+    const checks = true;
+    const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
+    const newChecked = checked.filter((checks: boolean) => !checkedTodos.includes(checks));
 
     if (remove === true) {
       const completed = this.state.checkedTodos.filter((name: string, el) => {
@@ -148,7 +166,7 @@ class Item extends React.Component <any, MyProps> {
             {this.state.todos.map(todo => (
               <li className="todo stack-small" key={this.state.todos.indexOf(todo)}>
                 <div className="c-cb">
-                  <input id={this.getState(todo)} type="checkbox" onChange={this.handleHide}/>
+                  <input id={this.getState(todo)} type="checkbox" onChange={() => {this.handleHide(todo)}}/>
                   <label className="todo-label" htmlFor={this.getState(todo)}> {todo}</label>
                 </div>
 
