@@ -54,7 +54,6 @@ class Item extends React.Component <any, MyProps> {
     this.clearCompleted(false);
     const { checkedTodos } = this.state;
     let { completedBtn } = this.state;
-
     if (completedBtn === 'Show Completed') {
       let allTodos = [];
       const { todos } = this.state;
@@ -88,14 +87,13 @@ class Item extends React.Component <any, MyProps> {
   clearCompleted(remove: boolean) {
     const { checkedTodos } = this.state;
     const { todos } = this.state;
-
+    console.log(checkedTodos, todos);
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) =>  {
-      let toHide = el.parentElement?.parentElement;
-      let labelParent = toHide?.children[0];
-      let labelValue = labelParent?.children[1].innerHTML;
-
+      let toHide = el.parentElement.parentElement;
+      let labelParent = toHide.children[0];
+      console.log(this.state.checked);
       if (this.state.checked === true) {
-        labelValue = document.getElementsByClassName(labelValue!)[i].innerHTML;
+        let labelValue = labelParent.children[1].innerHTML;
         labelValue = labelValue.substring(1); // theres a weird whitespace at the start of labelValue this is to remove it
         checkedTodos.push(labelValue);
       }
