@@ -1,23 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "outDir": "./dist",
     "target": "es5",
-    "allowJs": true,
-    "checkJs": false,
+    "module": "es6",
     "jsx": "react",
-    "outDir": "./build",
-    "rootDir": "public",
-    "removeComments": true,
-    "noEmit": true,
-    "pretty": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true
+    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true
 },
 "include": [
-    "public/**/*"
+    "public/**/*.tsx"
 ],
 "exclude": [
     "node_modules"
