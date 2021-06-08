@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// import './css/index.css';
 import App from './App';
 import {BrowserRouter, Route} from 'react-router-dom';
 
@@ -11,5 +10,3 @@ ReactDOM.render(
     </BrowserRouter>
     </React.Fragment>, document.getElementById('root')
   );
-
-// ReactDOM.render(<h1>HELO</h1>, document.getElementById('root'));

@@ -4,10 +4,19 @@
 
 # Installations
 - `webpack`
-- `webpack-cli@3.3.12`
+- `webpack-cli`
 - `webpack-dev-server`
 - `typescript`
 - `@types/react` 
 - `@types/react-dom`
 - `ts-loader`
 - `@types/react-router-dom`
+- `html-webpack-plugin`
+- `mini-css-extract-plugin`
+- `@babel/core`
+- `@babel/preset-env`
+- `babel-loader`
+
+# To Build & Run 
+- `npx webpack` to build
+- `npm start` to run in browser
