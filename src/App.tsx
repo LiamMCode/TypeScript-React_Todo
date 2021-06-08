@@ -3,9 +3,10 @@ import * as React from 'react';
 
 interface MyProps {
   todos: string[];
-  checkedTodos: any[];
+  checkedTodos: string[];
   completedBtn: string;
   checked: boolean[];
+  checkedComplete: boolean[];
   value: any;
 }
 
@@ -18,6 +19,7 @@ class Item extends React.Component <any, MyProps> {
       checkedTodos: [], 
       completedBtn: 'Hide Completed', 
       checked: [false, false, false, false, false, false], 
+      checkedComplete: [],
       value: undefined
     }
     this.handleChange = this.handleChange.bind(this);
@@ -67,13 +69,20 @@ class Item extends React.Component <any, MyProps> {
     this.clearCompleted(false);
     const { checkedTodos } = this.state;
     let { completedBtn } = this.state;
+    const { checked } = this.state;
+    const { checkedComplete } = this.state;
+    const { todos } = this.state;
+
     if (completedBtn === 'Show Completed') {
       let allTodos = [];
-      const { todos } = this.state;
-
+      let allChecked: boolean[] = [];
+      console.log(todos, checkedTodos);
       allTodos = todos.concat(checkedTodos);
+      allChecked = checked.concat(checkedComplete);
+
       this.setState({ completedBtn : 'Hide Completed'});
       this.setState({ todos : allTodos});
+      this.setState({ checked : allChecked});
     }
 
     else if (checkedTodos.length > 0) {
@@ -96,35 +105,41 @@ class Item extends React.Component <any, MyProps> {
     this.setState({ todos });
     this.setState({ checkedTodos : completed});
   }
-  // would have to also remove the bool after the todo which is checked 
+
   clearCompleted(remove: boolean) {
     const { checkedTodos } = this.state;
     const { todos } = this.state;
     const { checked } = this.state;
+    const { checkedComplete } = this.state;
 
     console.log(checkedTodos, todos);
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) =>  {
       let toHide = el.parentElement.parentElement;
       let labelParent = toHide.children[0];
 
-      if (checked[i] === true) { // this line changes 
+      if (checked[i] === true) { 
         let labelValue = labelParent.children[1].innerHTML;
         console.log(labelValue);
         labelValue = labelValue.substring(1); // theres a weird whitespace at the start of labelValue this is to remove it
         checkedTodos.push(labelValue);
-        checkedTodos.push(checked[i]);
+        checkedComplete.push(checked[i]);
       }
       (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
     });
     const checks = true;
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
-    const newChecked = checked.filter((checks: boolean) => !checkedTodos.includes(checks));
+    const newChecked = checked.filter((checks: boolean) => !checkedComplete.includes(checks));
 
     if (remove === true) {
       const completed = this.state.checkedTodos.filter((name: string, el) => {
         return false;
       })
       this.setState({ checkedTodos: completed });
+
+      const completedChecks = this.state.checkedComplete.filter((name: boolean, el) => {
+        return false;
+      })
+      this.setState({ checkedComplete: completedChecks });
     }
     this.setState({ todos: newTodos });
   }
