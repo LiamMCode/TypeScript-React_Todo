@@ -34,8 +34,7 @@ class Item extends React.Component <any, MyProps> {
 
   // handles the form submission and adds a todo to the task list
   handleSubmit(event: any) {
-    const { todos } = this.state;
-    const { checked } = this.state;
+    const { todos, checked } = this.state;
 
     event.preventDefault();
     const form = event.currentTarget;
@@ -59,8 +58,7 @@ class Item extends React.Component <any, MyProps> {
   }
 
   handleHide(todoToHide: string) {
-    const { checked } = this.state;
-    const { todos } = this.state;
+    const { checked, todos } = this.state;
 
     const indexOfTodo = todos.indexOf(todoToHide);
 
@@ -72,31 +70,23 @@ class Item extends React.Component <any, MyProps> {
       newChecked[indexOfTodo] = true
     }
     this.setState({checked : newChecked});
-    console.log(checked);
   }
 
   hideComplete() {
-    this.clearCompleted(false);
-    const { checkedTodos } = this.state;
-    let { completedBtn } = this.state;
-    const { checked } = this.state;
-    const { checkedComplete } = this.state;
-    const { todos } = this.state;
+    const { checkedTodos, completedBtn, checked, checkedComplete, todos } = this.state;
 
     if (completedBtn === 'Show Completed') {
       let allTodos = [];
       let allChecked: boolean[] = [];
-      console.log(todos, checkedTodos);
       allTodos = todos.concat(checkedTodos);
       allChecked = checked.concat(checkedComplete);
-
-      this.setState({ completedBtn : 'Hide Completed'});
-      this.setState({ todos : allTodos});
-      this.setState({ checked : allChecked});
+      this.setState({ completedBtn : 'Hide Completed', todos : allTodos, checked : allChecked});
     }
 
-    else if (checkedTodos.length > 0) {
-      this.setState({ completedBtn : 'Show Completed'});
+    else if (completedBtn === 'Hide Completed') {
+      this.clearCompleted(false);
+      const newChecked = checked.filter((checks: boolean = true) => !checkedComplete.includes(checks));
+      this.setState({ checked: newChecked, completedBtn: 'Show Completed' });
     }
   }
 
@@ -109,24 +99,18 @@ class Item extends React.Component <any, MyProps> {
   }
 
   removeAll() {
-    const { todos } = this.state;
-    const { checkedTodos } = this.state;
+    const { todos, checkedTodos } = this.state;
 
     const todosNew = todos.filter((name: string, el) => false);
     const completed = checkedTodos.filter((name: string, el) => {
       return false;
     })
-    this.setState({ todos : todosNew });
-    this.setState({ checkedTodos : completed});
+    this.setState({ todos : todosNew, checkedTodos : completed});
   }
 
   clearCompleted(remove: boolean) {
-    const { checkedTodos } = this.state;
-    const { todos } = this.state;
-    const { checked } = this.state;
-    const { checkedComplete } = this.state;
+    const { checkedTodos, todos, checked, checkedComplete } = this.state;
 
-    console.log(checkedTodos, todos);
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) =>  {
       let toHide = el.parentElement.parentElement;
       let labelParent = toHide.children[0];
@@ -142,14 +126,12 @@ class Item extends React.Component <any, MyProps> {
     });
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
     const newChecked = checked.filter((checks: boolean) => !checkedComplete.includes(true));
-    console.log(newChecked);
 
     if (remove === true) {
       const completed = checkedTodos.filter((name: string, el) => {
         return false;
       })
-      this.setState({ checked : newChecked});
-      this.setState({ checkedTodos: completed });
+      this.setState({ checked : newChecked, checkedTodos: completed });
 
       const completedChecks = checkedComplete.filter((name: boolean, el) => {
         return false;
