@@ -119,12 +119,10 @@ class Item extends React.Component <any, MyProps> {
     const { checkedTodos, todos, checked, checkedComplete } = this.state;
 
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) =>  {
-      let toHide = el.parentElement.parentElement;
-      let labelParent = toHide.children[0];
+      let toHide = el.parentElement.parentElement.children[0];
 
       if (checked[i] === true) { 
-        let labelValue = labelParent.children[1].innerHTML;
-        labelValue = labelValue.substring(1); // theres a weird whitespace at the start of labelValue this is to remove it
+        let labelValue = (toHide.children[1].innerHTML).substring(1); // theres a weird whitespace at the start of labelValue the substring removes it
         checkedTodos.push(labelValue);
         checkedComplete.push(checked[i]);
       }

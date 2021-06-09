@@ -15,7 +15,16 @@
 - `@babel/core`
 - `@babel/preset-env`
 - `babel-loader`
+- `eslint-config-airbnb-typescript`
+- `eslint-plugin-import@^2.22.0 \`
+- `eslint-plugin-jsx-a11y@^6.3.1 \`
+- `eslint-plugin-react@^7.20.3 \`
+- `eslint-plugin-react-hooks@^4.0.8 \`
+- `@typescript-eslint/eslint-plugin@^4.4.1 \`
 
 # To Build & Run 
 - `npx webpack` to build
 - `npm start` to run in browser
+
+# EsLint
+- `npx eslint . --ext .js,.tsx` to run the linter
