@@ -153,18 +153,23 @@ class Item extends React.Component <any, MyProps> {
   }
 
   render() {
+    const {
+      value,
+      completedBtn,
+      todos,
+    } = this.state;
     return (
       <>
         <div className="todoapp stack-large">
           <h1>Todo App with TypeScript and React</h1>
           <form onSubmit={this.handleSubmit}>
-            <input type="text" id="newTodo" className="input input__lg" name="newTodo" autoComplete="off" value={this.state.value} onChange={this.handleChange} />
+            <input type="text" id="newTodo" className="input input__lg" name="newTodo" autoComplete="off" value={value} onChange={this.handleChange} />
             <button type="submit" className="btn btn__primary btn__lg"> Add Todo </button>
           </form>
           <div className="filters btn-group stack-exception">
             <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => { this.hideComplete(); }}>
               <span className="visually-hidden"> Hide/Show completed </span>
-              <span className="btnLabel">{ this.state.completedBtn }</span>
+              <span className="btnLabel">{ completedBtn }</span>
               <span className="visually-hidden"> tasks</span>
             </button>
 
@@ -183,8 +188,8 @@ class Item extends React.Component <any, MyProps> {
           <h2 id="list-heading"> Tasks </h2>
 
           <ul className="todo-list stack-large stack-exception" aria-labelledby="list-heading">
-            {this.state.todos.map((todo) => (
-              <li className="todo stack-small" key={this.state.todos.indexOf(todo)}>
+            {todos.map((todo) => (
+              <li className="todo stack-small" key={todos.indexOf(todo)}>
                 <div className="c-cb">
                   <input id={this.getState(todo)} type="checkbox" onChange={() => { this.handleHide(todo); }} />
                   <label className="todo-label" htmlFor={this.getState(todo)}>
