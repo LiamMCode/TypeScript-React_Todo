@@ -28,4 +28,4 @@
 - `npm start` to run in browser
 
 # EsLint
-- `npx eslint . --ext .js,.tsx` to run the linter
+- `npm run lint` to run the linter

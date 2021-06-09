@@ -1,6 +1,5 @@
-/* eslint-disable no-alert */
-import './css/App.css';
 import * as React from 'react';
+import './css/App.css';
 
 interface MyProps {
   todos: string[];
