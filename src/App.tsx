@@ -10,6 +10,11 @@ interface MyProps {
   value: any;
 }
 
+enum toggle {
+  show = 'Show Completed', 
+  hide = 'Hide Completed'
+}
+
 class Item extends React.Component <any, MyProps> {
   constructor(props: any) {
     super(props);
@@ -17,7 +22,7 @@ class Item extends React.Component <any, MyProps> {
       todos: ['Implement the addTodo method', 'Implement the removeTodo method', 'Implement the clearCompletedTodos method', 
     'Implement the removeAllTodos method', 'Implement the showHideCompletedTodso method', 'Implement the toggleTodoCompleteStatus method'], 
       checkedTodos: [], 
-      completedBtn: 'Hide Completed', 
+      completedBtn: toggle.hide, 
       checked: [false, false, false, false, false, false], 
       checkedComplete: [],
       value: ''
@@ -51,7 +56,8 @@ class Item extends React.Component <any, MyProps> {
         const newChecked = checked.concat(false);
         this.setState({
           todos: newTodos, 
-          checked: newChecked
+          checked: newChecked, 
+          value: ''
         })
       }
     }
@@ -75,18 +81,18 @@ class Item extends React.Component <any, MyProps> {
   hideComplete() {
     const { checkedTodos, completedBtn, checked, checkedComplete, todos } = this.state;
 
-    if (completedBtn === 'Show Completed') {
+    if (completedBtn === toggle.show) {
       let allTodos = [];
       let allChecked: boolean[] = [];
       allTodos = todos.concat(checkedTodos);
       allChecked = checked.concat(checkedComplete);
-      this.setState({ completedBtn : 'Hide Completed', todos : allTodos, checked : allChecked});
+      this.setState({ completedBtn : toggle.hide, todos : allTodos, checked : allChecked});
     }
 
-    else if (completedBtn === 'Hide Completed') {
+    else if (completedBtn === toggle.hide) {
       this.clearCompleted(false);
       const newChecked = checked.filter((checks: boolean = true) => !checkedComplete.includes(checks));
-      this.setState({ checked: newChecked, completedBtn: 'Show Completed' });
+      this.setState({ checked: newChecked, completedBtn: toggle.show });
     }
   }
 
@@ -117,7 +123,6 @@ class Item extends React.Component <any, MyProps> {
 
       if (checked[i] === true) { 
         let labelValue = labelParent.children[1].innerHTML;
-        console.log(labelValue);
         labelValue = labelValue.substring(1); // theres a weird whitespace at the start of labelValue this is to remove it
         checkedTodos.push(labelValue);
         checkedComplete.push(checked[i]);
@@ -153,23 +158,23 @@ class Item extends React.Component <any, MyProps> {
           <h1>Todo App with TypeScript and React</h1>
           <form onSubmit={this.handleSubmit}>
             <input type="text" id="newTodo" className="input input__lg" name="newTodo" autoComplete="off" value={this.state.value} onChange={this.handleChange}/>
-            <button type="submit" className="btn btn__primary btn__lg"> Add </button>
+            <button type="submit" className="btn btn__primary btn__lg"> Add Todo </button>
           </form>
           <div className="filters btn-group stack-exception">
             <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => {this.hideComplete()}}>
-              <span className="visually-hidden">Hide </span>
+              <span className="visually-hidden"> Hide/Show completed </span>
               <span className="btnLabel">{ this.state.completedBtn }</span>
               <span className="visually-hidden"> tasks</span>
             </button>
             
             <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => {this.removeAll()}}>
-              <span className="visually-hidden">Show </span>
+              <span className="visually-hidden"> Remove All </span>
               <span>Remove All</span>
               <span className="visually-hidden"> tasks</span>
             </button>
 
             <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => {this.clearCompleted(true)}}>
-              <span className="visually-hidden">Show </span>
+              <span className="visually-hidden"> Clear Completed </span>
               <span>Clear Completed</span>
               <span className="visually-hidden"> tasks</span>
             </button>
