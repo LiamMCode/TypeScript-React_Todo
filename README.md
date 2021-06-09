@@ -15,6 +15,7 @@
 - `@babel/core`
 - `@babel/preset-env`
 - `babel-loader`
+- `eslint`
 - `eslint-config-airbnb-typescript`
 - `eslint-plugin-import@^2.22.0 \`
 - `eslint-plugin-jsx-a11y@^6.3.1 \`
