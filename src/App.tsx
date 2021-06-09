@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import './css/App.css';
 import * as React from 'react';
 
@@ -101,8 +102,8 @@ class Item extends React.Component <any, MyProps> {
       this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos, checked: allChecked });
     } else if (completedBtn === ToggleShowHide.hide) {
       this.clearCompleted(false);
-      const newChecked = checked.filter((checks: boolean = true) => !checkedComplete.includes(checks));
-      this.setState({ checked: newChecked, completedBtn: ToggleShowHide.show });
+      const newCheck = checked.filter((check: boolean = true) => !checkedComplete.includes(check));
+      this.setState({ checked: newCheck, completedBtn: ToggleShowHide.show });
     }
   }
 
@@ -131,8 +132,7 @@ class Item extends React.Component <any, MyProps> {
       const toHide = el.parentElement.parentElement.children[0];
 
       if (checked[i] === true) {
-        // theres a weird whitespace at the start of labelValue the substring removes it
-        const labelValue = (toHide.children[1].innerHTML).substring(1);
+        const labelValue = (toHide.children[1].innerHTML);
         checkedTodos.push(labelValue);
         checkedComplete.push(checked[i]);
       }
@@ -162,19 +162,19 @@ class Item extends React.Component <any, MyProps> {
             <button type="submit" className="btn btn__primary btn__lg"> Add Todo </button>
           </form>
           <div className="filters btn-group stack-exception">
-            <button type="button" className="btn ToggleShowHide-btn" aria-pressed="false" onClick={() => { this.hideComplete(); }}>
+            <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => { this.hideComplete(); }}>
               <span className="visually-hidden"> Hide/Show completed </span>
               <span className="btnLabel">{ this.state.completedBtn }</span>
               <span className="visually-hidden"> tasks</span>
             </button>
 
-            <button type="button" className="btn ToggleShowHide-btn" aria-pressed="false" onClick={() => { this.removeAll(); }}>
+            <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => { this.removeAll(); }}>
               <span className="visually-hidden"> Remove All </span>
               <span>Remove All</span>
               <span className="visually-hidden"> tasks</span>
             </button>
 
-            <button type="button" className="btn ToggleShowHide-btn" aria-pressed="false" onClick={() => { this.clearCompleted(true); }}>
+            <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => { this.clearCompleted(true); }}>
               <span className="visually-hidden"> Clear Completed </span>
               <span>Clear Completed</span>
               <span className="visually-hidden"> tasks</span>
@@ -202,7 +202,6 @@ class Item extends React.Component <any, MyProps> {
             ))}
           </ul>
         </div>
-        ;
       </>
     );
   }
