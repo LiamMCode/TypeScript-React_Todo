@@ -12,7 +12,9 @@ interface MyProps {
 
 enum toggle {
   show = 'Show Completed', 
-  hide = 'Hide Completed'
+  hide = 'Hide Completed', 
+  emptyInput = 'Please enter a value into the text field', 
+  duplicateInput = 'This Todo is already in the Task List, please enter a new Todo'
 }
 
 class Item extends React.Component <any, MyProps> {
@@ -44,13 +46,14 @@ class Item extends React.Component <any, MyProps> {
     event.preventDefault();
     const form = event.currentTarget;
     const inputValue = form.elements["newTodo"].value;
+    
     if (inputValue === '') {
-      alert('Please enter a value into the text field');
+      alert(toggle.emptyInput);
     }
     else {
       const newTodos = todos.concat(inputValue);
       if (todos.includes(inputValue)) {
-        alert('This Todo is already in the Task List, please enter a new Todo')
+        alert(toggle.duplicateInput);
       }
       if (!todos.includes(inputValue)) {
         const newChecked = checked.concat(false);
@@ -65,7 +68,6 @@ class Item extends React.Component <any, MyProps> {
 
   handleHide(todoToHide: string) {
     const { checked, todos } = this.state;
-
     const indexOfTodo = todos.indexOf(todoToHide);
 
     let newChecked: boolean[] = checked;
@@ -106,7 +108,6 @@ class Item extends React.Component <any, MyProps> {
 
   removeAll() {
     const { todos, checkedTodos } = this.state;
-
     const todosNew = todos.filter((name: string, el) => false);
     const completed = checkedTodos.filter((name: string, el) => {
       return false;
@@ -129,6 +130,7 @@ class Item extends React.Component <any, MyProps> {
       }
       (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
     });
+
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
     const newChecked = checked.filter((checks: boolean) => !checkedComplete.includes(true));
 
@@ -151,6 +153,7 @@ class Item extends React.Component <any, MyProps> {
     let currentState: string = String(todos.indexOf(todo));
     return currentState;
   }
+
   render() {
     return (
       <React.Fragment>
@@ -202,9 +205,4 @@ class Item extends React.Component <any, MyProps> {
     )
   }
 }
-function App() {
-    return (
-      <Item />
-    )
-  }  
-export default App;
+export default Item;
