@@ -101,18 +101,22 @@ class Item extends React.Component <any, MyProps> {
   }
 
   removeTodo(event: string) {
-    const todos = this.state.todos.filter((name: string) => {
+    const { todos } = this.state;
+    const todosNew = todos.filter((name: string) => {
       return event !== name;
     })
-    this.setState({ todos })
+    this.setState({ todos : todosNew })
   }
 
   removeAll() {
-    const todos = this.state.todos.filter((name: string, el) => false);
-    const completed = this.state.checkedTodos.filter((name: string, el) => {
+    const { todos } = this.state;
+    const { checkedTodos } = this.state;
+
+    const todosNew = todos.filter((name: string, el) => false);
+    const completed = checkedTodos.filter((name: string, el) => {
       return false;
     })
-    this.setState({ todos });
+    this.setState({ todos : todosNew });
     this.setState({ checkedTodos : completed});
   }
 
@@ -137,15 +141,17 @@ class Item extends React.Component <any, MyProps> {
       (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
     });
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
-    const newChecked = checked.filter((checks: boolean) => !checkedComplete.includes(checks));
+    const newChecked = checked.filter((checks: boolean) => !checkedComplete.includes(true));
+    console.log(newChecked);
 
     if (remove === true) {
-      const completed = this.state.checkedTodos.filter((name: string, el) => {
+      const completed = checkedTodos.filter((name: string, el) => {
         return false;
       })
+      this.setState({ checked : newChecked});
       this.setState({ checkedTodos: completed });
 
-      const completedChecks = this.state.checkedComplete.filter((name: boolean, el) => {
+      const completedChecks = checkedComplete.filter((name: boolean, el) => {
         return false;
       })
       this.setState({ checkedComplete: completedChecks });
@@ -154,7 +160,8 @@ class Item extends React.Component <any, MyProps> {
   }
 
   getState(todo: string) {
-    let currentState: string = String(this.state.todos.indexOf(todo));
+    const { todos } = this.state;
+    let currentState: string = String(todos.indexOf(todo));
     return currentState;
   }
   render() {
