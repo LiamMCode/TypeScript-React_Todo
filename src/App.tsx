@@ -26,7 +26,7 @@ class Item extends React.Component <any, MyProps> {
       checkedTodos: [],
       completedBtn: ToggleShowHide.hide,
       checked: [false, false, false, false, false, false],
-      checkedComplete: [],
+      checkedComplete: [false, false, false, false, false, false],
       value: '',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -49,7 +49,8 @@ class Item extends React.Component <any, MyProps> {
 
     if (inputValue === '') {
       alert(ToggleShowHide.emptyInput);
-    } else {
+    } 
+    else {
       const newTodos = todos.concat(inputValue);
       if (todos.includes(inputValue)) {
         alert(ToggleShowHide.duplicateInput);
@@ -72,7 +73,8 @@ class Item extends React.Component <any, MyProps> {
     const newChecked: boolean[] = checked;
     if (newChecked[indexOfTodo] === true) {
       newChecked[indexOfTodo] = false;
-    } else {
+    } 
+    else {
       newChecked[indexOfTodo] = true;
     }
     this.setState({ checked: newChecked });
@@ -94,12 +96,20 @@ class Item extends React.Component <any, MyProps> {
     } = this.state;
 
     if (completedBtn === ToggleShowHide.show) {
-      let allTodos = [];
+      let allTodos: string[] = [];
       let allChecked: boolean[] = [];
+
       allTodos = todos.concat(checkedTodos);
       allChecked = checked.concat(checkedComplete);
+      document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
+        if (checkedComplete[i] === true) {
+          console.log(checkedComplete);
+          (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
+        }
+      });
       this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos, checked: allChecked });
-    } else if (completedBtn === ToggleShowHide.hide) {
+    } 
+    else if (completedBtn === ToggleShowHide.hide) {
       this.clearCompleted(false);
       const newCheck = checked.filter((check: boolean = true) => !checkedComplete.includes(check));
       this.setState({ checked: newCheck, completedBtn: ToggleShowHide.show });
