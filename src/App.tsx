@@ -99,21 +99,19 @@ class Item extends React.Component <any, MyProps> {
       let allTodos: string[] = [];
       allTodos = todos.concat(checkedTodos);
       checkedComplete.splice(0,checkedTodos.length);
-      console.log(checked);
-
       document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
         if (checked[i] === true) {
-          console.log(checkedComplete, i, checked);
           (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
         }
       });
       this.clearCompleted(true);
-      this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos, checked: checkedComplete });
+      this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos });
     } 
     else if (completedBtn === ToggleShowHide.hide) {
       this.clearCompleted(false);
       this.setState({ checked: checkedComplete, completedBtn: ToggleShowHide.show });
     }
+    console.log(checked, checkedComplete);
   }
 
   removeTodo(event: string) {
@@ -130,12 +128,7 @@ class Item extends React.Component <any, MyProps> {
   }
 
   clearCompleted(remove: boolean) {
-    const {
-      checkedTodos,
-      todos,
-      checked,
-      checkedComplete,
-    } = this.state;
+    const { checkedTodos,todos,checked, checkedComplete } = this.state;
 
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
       const toHide = el.parentElement.parentElement.children[0];
@@ -143,24 +136,27 @@ class Item extends React.Component <any, MyProps> {
       if (checked[i] === true) {
         const labelValue = (toHide.children[1].innerHTML);
         checkedTodos.push(labelValue);
-        checkedComplete.push(checked[i]);
       }
       (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
     });
-
+    console.log(checkedComplete, checked);
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
 
     if (remove === true) {
-      // need to get how many have been removed & then remove 0 - how many have been checked from the front of checked
-      console.log(checkedTodos, checkedTodos.length);
-      // checkedComplete.splice(0,checkedTodos.length);
-      console.log(checkedComplete);
-
-      const completed = checkedTodos.filter(() => false);
+      const completed: string[] = checkedTodos.filter(() => true);
       this.setState({ checked: checkedComplete, checkedTodos: completed });
+      // need to potentially loop through completed and find their index in todos and have those checkboxes checked
 
-      const completedChecks = checkedComplete.filter(() => false);
-      this.setState({ checkedComplete: completedChecks });
+       while (checked.length && checkedComplete.length < (todos.length + checkedTodos.length)) {
+         checked.push(true);
+         checkedComplete.push(true);
+       }
+       while (checked.length > (todos.length + checkedTodos.length)) {
+         checked.pop();
+       }
+       while (checkedComplete.length > (todos.length + checkedTodos.length)) {
+        checkedComplete.pop();
+      }
     }
     this.setState({ todos: newTodos });
   }
