@@ -145,20 +145,28 @@ class Item extends React.Component <any, MyProps> {
     if (remove === true) {
       const completed: string[] = checkedTodos.filter(() => true);
       this.setState({ checked: checkedComplete, checkedTodos: completed });
-      // need to potentially loop through completed and find their index in todos and have those checkboxes checked
-
-       while (checked.length && checkedComplete.length < (todos.length + checkedTodos.length)) {
-         checked.push(true);
-         checkedComplete.push(true);
-       }
-       while (checked.length > (todos.length + checkedTodos.length)) {
-         checked.pop();
-       }
-       while (checkedComplete.length > (todos.length + checkedTodos.length)) {
-        checkedComplete.pop();
-      }
     }
     this.setState({ todos: newTodos });
+  //   while (checked.length > todos.length) {
+  //     checked.pop();
+  //   }
+  //   while (checkedComplete.length > todos.length) {
+  //    checkedComplete.pop();
+  //  }
+  //   while (checked.length && checkedComplete.length < (todos.length)) {
+  //     checked.push(true);
+  //     checkedComplete.push(true);
+  //   }
+
+    for (let i = 0; i < todos.length; i++) {
+      if (checked[i] === true) {
+        (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
+      }
+      else {
+        (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
+      }
+    }
+   console.log(checked, checkedComplete);
   }
 
   render() {
