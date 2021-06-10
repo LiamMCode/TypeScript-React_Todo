@@ -97,9 +97,9 @@ class Item extends React.Component <any, MyProps> {
 
     if (completedBtn === ToggleShowHide.show) {
       let allTodos: string[] = [];
-      let allChecked: boolean[] = [];
       allTodos = todos.concat(checkedTodos);
-      allChecked = checked.concat(checkedComplete);
+      checkedComplete.splice(0,checkedTodos.length);
+      console.log(checked);
 
       document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
         if (checked[i] === true) {
@@ -108,13 +108,11 @@ class Item extends React.Component <any, MyProps> {
         }
       });
       this.clearCompleted(true);
-      this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos, checked: allChecked });
+      this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos, checked: checkedComplete });
     } 
     else if (completedBtn === ToggleShowHide.hide) {
       this.clearCompleted(false);
-      const newCheck = checked.filter((check: boolean = true) => !checkedComplete.includes(check));
-      console.log(checked, newCheck);
-      this.setState({ checked: newCheck, completedBtn: ToggleShowHide.show });
+      this.setState({ checked: checkedComplete, completedBtn: ToggleShowHide.show });
     }
   }
 
@@ -155,7 +153,7 @@ class Item extends React.Component <any, MyProps> {
     if (remove === true) {
       // need to get how many have been removed & then remove 0 - how many have been checked from the front of checked
       console.log(checkedTodos, checkedTodos.length);
-      checkedComplete.splice(0,checkedTodos.length);
+      // checkedComplete.splice(0,checkedTodos.length);
       console.log(checkedComplete);
 
       const completed = checkedTodos.filter(() => false);
