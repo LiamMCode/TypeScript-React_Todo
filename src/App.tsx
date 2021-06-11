@@ -100,9 +100,7 @@ class Item extends React.Component <any, MyProps> {
       allTodos = todos.concat(checkedTodos);
       this.clearCompleted(true);
 
-      const removedItems = checkedTodos.length;
       const setToTrue = todos.length - checkedTodos.length;
-
       for(let i = setToTrue; i < todos.length; i++) {
         checkedComplete[i] = true;
       }
