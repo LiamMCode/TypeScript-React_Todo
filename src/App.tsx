@@ -128,7 +128,7 @@ class Item extends React.Component <any, MyProps> {
   }
 
   clearCompleted(remove: boolean) {
-    const { checkedTodos,todos,checked, checkedComplete } = this.state;
+    const { checkedTodos, todos ,checked, checkedComplete } = this.state;
 
     document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
       const toHide = el.parentElement.parentElement.children[0];
@@ -140,33 +140,27 @@ class Item extends React.Component <any, MyProps> {
       (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
     });
     console.log(checkedComplete, checked);
+    console.log(checkedTodos, todos);
     const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
+    this.setState({ todos: newTodos });
 
     if (remove === true) {
       const completed: string[] = checkedTodos.filter(() => true);
+      console.log(completed);
       this.setState({ checked: checkedComplete, checkedTodos: completed });
-    }
-    this.setState({ todos: newTodos });
-  //   while (checked.length > todos.length) {
-  //     checked.pop();
-  //   }
-  //   while (checkedComplete.length > todos.length) {
-  //    checkedComplete.pop();
-  //  }
-  //   while (checked.length && checkedComplete.length < (todos.length)) {
-  //     checked.push(true);
-  //     checkedComplete.push(true);
-  //   }
-
-    for (let i = 0; i < todos.length; i++) {
-      if (checked[i] === true) {
-        (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
+      const allTodos = todos.concat(checkedTodos);
+      for (let i = 0; i < todos.length; i++) {
+        console.log(todos.length);
+        if (checked[i] === true) {
+          (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
+        }
+        else {
+          (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
+        }
       }
-      else {
-        (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
-      }
+      this.setState({ todos: allTodos});
     }
-   console.log(checked, checkedComplete);
+    console.log(checked, checkedComplete, newTodos);
   }
 
   render() {
