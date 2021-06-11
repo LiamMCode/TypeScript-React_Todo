@@ -98,12 +98,13 @@ class Item extends React.Component <any, MyProps> {
     if (completedBtn === ToggleShowHide.show) {
       let allTodos: string[] = [];
       allTodos = todos.concat(checkedTodos);
-      checkedComplete.splice(0,checkedTodos.length);
       document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
         if (checked[i] === true) {
           (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
+          checkedComplete[i] = true;
         }
       });
+      this.setState({ checked: checkedComplete });
       this.clearCompleted(true);
       this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos });
     } 
@@ -128,29 +129,30 @@ class Item extends React.Component <any, MyProps> {
   }
 
   clearCompleted(remove: boolean) {
-    const { checkedTodos, todos ,checked, checkedComplete } = this.state;
+    const { checkedTodos, todos, checked, checkedComplete } = this.state;
+    if (remove === false) {
+      document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
+        const toHide = el.parentElement.parentElement.children[0];
 
-    document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
-      const toHide = el.parentElement.parentElement.children[0];
-
-      if (checked[i] === true) {
-        const labelValue = (toHide.children[1].innerHTML);
-        checkedTodos.push(labelValue);
-      }
-      (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
-    });
-    console.log(checkedComplete, checked);
-    console.log(checkedTodos, todos);
-    const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
-    this.setState({ todos: newTodos });
-
-    if (remove === true) {
+        if (checked[i] === true) {
+          const labelValue = (toHide.children[1].innerHTML);
+          checkedTodos.push(labelValue);
+        }
+        (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
+      });
+      console.log(checkedComplete, checked);
+      const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
+      this.setState({ todos: newTodos });
+    }
+    else if (remove === true) {
       const completed: string[] = checkedTodos.filter(() => true);
-      console.log(completed);
-      this.setState({ checked: checkedComplete, checkedTodos: completed });
+      for (let i = 0; i < checkedTodos.length; i++) {
+        checkedComplete.concat(true);
+      }
+      console.log(checkedComplete);
+      this.setState({ checkedTodos: completed, checked: checkedComplete });
       const allTodos = todos.concat(checkedTodos);
       for (let i = 0; i < todos.length; i++) {
-        console.log(todos.length);
         if (checked[i] === true) {
           (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
         }
@@ -158,9 +160,8 @@ class Item extends React.Component <any, MyProps> {
           (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
         }
       }
-      this.setState({ todos: allTodos});
+      this.setState({ todos: allTodos });
     }
-    console.log(checked, checkedComplete, newTodos);
   }
 
   render() {
