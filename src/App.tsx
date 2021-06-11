@@ -99,9 +99,16 @@ class Item extends React.Component <any, MyProps> {
       let allTodos: string[] = [];
       allTodos = todos.concat(checkedTodos);
       this.clearCompleted(true);
+
+      const removedItems = checkedTodos.length;
+      const setToTrue = todos.length - checkedTodos.length;
+
+      for(let i = setToTrue; i < todos.length; i++) {
+        checkedComplete[i] = true;
+      }
+
       document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
         console.log(checked, checkedComplete);
-        checkedComplete[i] = true;
         if (checkedComplete[i] === true) {
           (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
           const checkedReset = checkedComplete;
