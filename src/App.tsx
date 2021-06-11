@@ -98,21 +98,22 @@ class Item extends React.Component <any, MyProps> {
     if (completedBtn === ToggleShowHide.show) {
       let allTodos: string[] = [];
       allTodos = todos.concat(checkedTodos);
+      this.clearCompleted(true);
       document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
-        if (checked[i] === true) {
+        console.log(checked, checkedComplete);
+        checkedComplete[i] = true;
+        if (checkedComplete[i] === true) {
           (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
-          checkedComplete[i] = true;
+          const checkedReset = checkedComplete;
+          this.setState({ checkedComplete: checkedReset });
         }
       });
-      this.setState({ checked: checkedComplete });
-      this.clearCompleted(true);
       this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos });
     } 
     else if (completedBtn === ToggleShowHide.hide) {
       this.clearCompleted(false);
       this.setState({ checked: checkedComplete, completedBtn: ToggleShowHide.show });
     }
-    console.log(checked, checkedComplete);
   }
 
   removeTodo(event: string) {
@@ -140,7 +141,6 @@ class Item extends React.Component <any, MyProps> {
         }
         (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
       });
-      console.log(checkedComplete, checked);
       const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
       this.setState({ todos: newTodos });
     }
@@ -149,9 +149,9 @@ class Item extends React.Component <any, MyProps> {
       for (let i = 0; i < checkedTodos.length; i++) {
         checkedComplete.concat(true);
       }
-      console.log(checkedComplete);
       this.setState({ checkedTodos: completed, checked: checkedComplete });
       const allTodos = todos.concat(checkedTodos);
+      this.setState({ todos: allTodos });
       for (let i = 0; i < todos.length; i++) {
         if (checked[i] === true) {
           (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
@@ -160,7 +160,7 @@ class Item extends React.Component <any, MyProps> {
           (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
         }
       }
-      this.setState({ todos: allTodos });
+      console.log(todos, allTodos); // setState above is not setting todos correctly as todos is 4 here and allTodos is 6
     }
   }
 
