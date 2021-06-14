@@ -96,8 +96,9 @@ class Item extends React.Component <any, MyProps> {
     } = this.state;
 
     if (completedBtn === ToggleShowHide.show) {
-      let allTodos: string[] = [];
-      allTodos = todos.concat(checkedTodos);
+      const allTodos: string[] = todos.concat(checkedTodos);
+      console.log(allTodos);
+      this.setState({ todos: allTodos });
       this.clearCompleted(true);
 
       const setToTrue = todos.length - checkedTodos.length;
@@ -113,7 +114,8 @@ class Item extends React.Component <any, MyProps> {
           this.setState({ checkedComplete: checkedReset });
         }
       });
-      this.setState({ completedBtn: ToggleShowHide.hide, todos: allTodos });
+      console.log(todos);
+      this.setState({ completedBtn: ToggleShowHide.hide });
     } 
     else if (completedBtn === ToggleShowHide.hide) {
       this.clearCompleted(false);
@@ -155,17 +157,6 @@ class Item extends React.Component <any, MyProps> {
         checkedComplete.concat(true);
       }
       this.setState({ checkedTodos: completed, checked: checkedComplete });
-      const allTodos = todos.concat(checkedTodos);
-      this.setState({ todos: allTodos });
-      for (let i = 0; i < todos.length; i++) {
-        if (checked[i] === true) {
-          (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
-        }
-        else {
-          (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
-        }
-      }
-      console.log(todos, allTodos); // setState above is not setting todos correctly as todos is 4 here and allTodos is 6
     }
   }
 
