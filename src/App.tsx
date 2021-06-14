@@ -1,18 +1,14 @@
 import * as React from 'react';
+import { Todo, TodoData } from'./todo'
 import './css/App.css';
 
 interface MyProps {
-  todos: string[];
-  checkedTodos: string[];
-  completedBtn: string;
-  checked: boolean[];
-  checkedComplete: boolean[];
+  todos: TodoData[];
+  showCompleted: boolean;
   value: any;
 }
 
 enum ToggleShowHide {
-  show = 'Show Completed',
-  hide = 'Hide Completed',
   emptyInput = 'Please enter a value into the text field',
   duplicateInput = 'This Todo is already in the Task List, please enter a new Todo',
 }
@@ -20,18 +16,46 @@ enum ToggleShowHide {
 class Item extends React.Component <any, MyProps> {
   constructor(props: any) {
     super(props);
+
     this.state = {
-      todos: ['Implement the addTodo method', 'Implement the removeTodo method', 'Implement the clearCompletedTodos method',
-        'Implement the removeAllTodos method', 'Implement the showHideCompletedTodso method', 'Implement the toggleTodoCompleteStatus method'],
-      checkedTodos: [],
-      completedBtn: ToggleShowHide.hide,
-      checked: [false, false, false, false, false, false],
-      checkedComplete: [false, false, false, false, false, false],
+      todos: [
+        {
+          id: 0,
+          title: 'Implement the addTodo method',
+          checked: false,
+        },
+        {
+          id: 1,
+          title: 'Implement the removeTodo method',
+          checked: false,
+        }, 
+        {
+          id: 2, 
+          title: 'Implement the clearCompletedTodos method',
+          checked: false,
+        },
+        {
+          id: 3, 
+          title: 'Implement the removeAllTodos method',
+          checked: false,
+        },
+        {
+          id: 4, 
+          title: 'Implement the showHideCompletedTodso method',
+          checked: false,
+        },
+        {
+          id: 5, 
+          title: 'Implement the toggleTodoCompleteStatus method',
+          checked: false,
+        },
+    ],
       value: '',
+      showCompleted: true,
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleHide = this.handleHide.bind(this);
   }
 
   // allows change of state in text box
@@ -41,129 +65,78 @@ class Item extends React.Component <any, MyProps> {
 
   // handles the form submission and adds a todo to the task list
   handleSubmit(event: any) {
-    const { todos, checked } = this.state;
-
     event.preventDefault();
-    const form = event.currentTarget;
-    const inputValue = form.elements.newTodo.value;
-
+    const inputValue = this.state.value;
+    let duplicate = false;
     if (inputValue === '') {
       alert(ToggleShowHide.emptyInput);
     } 
     else {
-      const newTodos = todos.concat(inputValue);
-      if (todos.includes(inputValue)) {
-        alert(ToggleShowHide.duplicateInput);
-      }
-      if (!todos.includes(inputValue)) {
-        const newChecked = checked.concat(false);
-        this.setState({
-          todos: newTodos,
-          checked: newChecked,
-          value: '',
-        });
-      }
-    }
-  }
-
-  handleHide(todoToHide: string) {
-    const { checked, todos } = this.state;
-    const indexOfTodo = todos.indexOf(todoToHide);
-
-    const newChecked: boolean[] = checked;
-    if (newChecked[indexOfTodo] === true) {
-      newChecked[indexOfTodo] = false;
-    } 
-    else {
-      newChecked[indexOfTodo] = true;
-    }
-    this.setState({ checked: newChecked });
-  }
-
-  getState(todo: string) {
-    const { todos } = this.state;
-    const currentState: string = String(todos.indexOf(todo));
-    return currentState;
-  }
-
-  hideComplete() {
-    const {
-      checkedTodos,
-      completedBtn,
-      checked,
-      checkedComplete,
-      todos,
-    } = this.state;
-
-    if (completedBtn === ToggleShowHide.show) {
-      const allTodos: string[] = todos.concat(checkedTodos);
-      console.log(allTodos);
-      this.setState({ todos: allTodos });
-      this.clearCompleted(true);
-
-      const setToTrue = todos.length - checkedTodos.length;
-      for(let i = setToTrue; i < todos.length; i++) {
-        checkedComplete[i] = true;
-      }
-
-      document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
-        console.log(checked, checkedComplete);
-        if (checkedComplete[i] === true) {
-          (document.getElementById(i.toString()) as HTMLInputElement).checked = true;
-          const checkedReset = checkedComplete;
-          this.setState({ checkedComplete: checkedReset });
+      this.state.todos.forEach((todo) => {
+        if (todo.title === inputValue) {
+          alert(ToggleShowHide.duplicateInput);
+          duplicate = true;
         }
       });
-      console.log(todos);
-      this.setState({ completedBtn: ToggleShowHide.hide });
-    } 
-    else if (completedBtn === ToggleShowHide.hide) {
-      this.clearCompleted(false);
-      this.setState({ checked: checkedComplete, completedBtn: ToggleShowHide.show });
+      if (!duplicate) {
+        this.setState({
+          todos: [...this.state.todos, {
+            id: this.state.todos.length,
+            title: inputValue,
+            checked: false,
+          }], 
+          value: '',
+        })
+      }
     }
   }
 
-  removeTodo(event: string) {
-    const { todos } = this.state;
-    const todosNew = todos.filter((name: string) => event !== name);
-    this.setState({ todos: todosNew });
+  toggleChecked = (id: number): void => {
+    this.state.todos.forEach((todo) => {
+      if (todo.id === id) {
+        todo.checked = !todo.checked;
+      }
+    });
+
+    this.setState({
+      todos: this.state.todos,
+    })
+
+  }
+  
+  hideComplete() {
+    this.setState({
+     showCompleted: !this.state.showCompleted
+    });
+  }
+
+  removeTodo = (id: number): void => {
+    const newTodos = this.state.todos.filter((todo) => {
+        return todo.id != id;
+    });
+    this.setState({
+      todos: newTodos,
+    });
   }
 
   removeAll() {
-    const { todos, checkedTodos } = this.state;
-    const todosNew = todos.filter(() => false);
-    const completed = checkedTodos.filter(() => false);
-    this.setState({ todos: todosNew, checkedTodos: completed });
+    this.setState({
+      todos: [],
+    });
   }
 
-  clearCompleted(remove: boolean) {
-    const { checkedTodos, todos, checked, checkedComplete } = this.state;
-    if (remove === false) {
-      document.querySelectorAll('input[type=checkbox]').forEach((el, i) => {
-        const toHide = el.parentElement.parentElement.children[0];
-
-        if (checked[i] === true) {
-          const labelValue = (toHide.children[1].innerHTML);
-          checkedTodos.push(labelValue);
-        }
-        (document.getElementById(i.toString()) as HTMLInputElement).checked = false;
-      });
-      const newTodos = todos.filter((todo: string) => !checkedTodos.includes(todo));
-      this.setState({ todos: newTodos });
-    }
-    else if (remove === true) {
-      const completed: string[] = checkedTodos.filter(() => true);
-      for (let i = 0; i < checkedTodos.length; i++) {
-        checkedComplete.concat(true);
+  clearCompleted() {
+    const clear = this.state.todos.filter((todo) => {
+      if (!todo.checked) {
+        return todo;
       }
-      this.setState({ checkedTodos: completed, checked: checkedComplete });
-    }
+    });
+    this.setState({ todos: clear });
   }
 
   render() {
     const {
       value,
-      completedBtn,
       todos,
     } = this.state;
     return (
@@ -177,7 +150,7 @@ class Item extends React.Component <any, MyProps> {
           <div className="filters btn-group stack-exception">
             <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => { this.hideComplete(); }}>
               <span className="visually-hidden"> Hide/Show completed </span>
-              <span className="btnLabel">{ completedBtn }</span>
+              <span className="btnLabel">{this.state.showCompleted ? 'Hide completed' : 'Show Completed'}</span>
               <span className="visually-hidden"> tasks</span>
             </button>
 
@@ -187,7 +160,7 @@ class Item extends React.Component <any, MyProps> {
               <span className="visually-hidden"> tasks</span>
             </button>
 
-            <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => { this.clearCompleted(true); }}>
+            <button type="button" className="btn toggle-btn" aria-pressed="false" onClick={() => { this.clearCompleted(); }}>
               <span className="visually-hidden"> Clear Completed </span>
               <span>Clear Completed</span>
               <span className="visually-hidden"> tasks</span>
@@ -197,21 +170,13 @@ class Item extends React.Component <any, MyProps> {
 
           <ul className="todo-list stack-large stack-exception" aria-labelledby="list-heading">
             {todos.map((todo) => (
-              <li className="todo stack-small" key={todos.indexOf(todo)}>
-                <div className="c-cb">
-                  <input id={this.getState(todo)} type="checkbox" onChange={() => { this.handleHide(todo); }} />
-                  <label className="todo-label" htmlFor={this.getState(todo)}>
-                    {todo}
-                  </label>
-                </div>
-
-                <div className="btn-group">
-                  <button type="button" className="btn btn__danger" onClick={() => { this.removeTodo(todo); }}>
-                    Delete
-                    <span className="visually-hidden">{todo}</span>
-                  </button>
-                </div>
-              </li>
+               !(!this.state.showCompleted && todo.checked) 
+               && <Todo 
+                    key={todo.id} 
+                    todo={todo} 
+                    deleteTodo={this.removeTodo} 
+                    toggleChecked={this.toggleChecked}
+                  />
             ))}
           </ul>
         </div>
